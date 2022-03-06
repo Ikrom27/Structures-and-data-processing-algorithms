@@ -1,3 +1,3 @@
 ﻿  c++.cpp
-C:\Users\Ikrom\Desktop\StructuresAndDatas\c++\c++\c++.cpp(75): warning C4715: List<int>::operator[]: значение возвращается не при всех путях выполнения
-  c++.vcxproj -> C:\Users\Ikrom\Desktop\StructuresAndDatas\c++\Debug\c++.exe
+C:\Users\Ikrom\Desktop\SADPA\c++ 7(1)\c++\c++.cpp(86): warning C4715: List<int>::operator[]: значение возвращается не при всех путях выполнения
+  c++.vcxproj -> C:\Users\Ikrom\Desktop\SADPA\c++ 7(1)\Debug\c++.exe

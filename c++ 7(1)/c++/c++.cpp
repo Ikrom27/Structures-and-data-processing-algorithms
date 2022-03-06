@@ -12,6 +12,7 @@ public:
     ~List();    //деструктор
 
     void push_back(T data);
+    void print();
     int getsize() { return size; }
     T& operator[](const int index);
 
@@ -59,6 +60,16 @@ void List<T>::push_back(T data)
     size++;
 }
 template<typename T>
+void List<T>::print()
+{
+    Node<T>* current = this->head;
+    while (current != nullptr)
+    {
+        std::cout << current->data << " ";
+        current = current->pNext;
+    }
+}
+template<typename T>
 T& List<T>::operator[](const int index)
 {
     int counter = 0;
@@ -79,19 +90,32 @@ int main()
 {
     List<int> lst1;
     List<int> lst2;
+    List<int> L;
 
-    int L1[10] = {1, 3, 34, 45, 32, 21, 23, 232, 12, 33};
-    int L2[10] = {2, 4, 34, 45, 36, 22, 23, 230, 10, 33};
+    int L1[10] = {1, 3, 33, 45, 32, 21, 23, 232, 12, 33};
+    int L2[10] = {2, 4, 33, 45, 36, 22, 23, 230, 10, 33};
 
     for (int i = 0; i < 10; i++) {
         lst1.push_back(L1[i]);
         lst2.push_back(L2[i]);
     }
-
+    bool block = 0;
     for (int i = 0; i < lst1.getsize(); i++) {
-        std::cout << lst1[i] << " ";
+        for (int j = 0; j < lst2.getsize(); j++) {
+            if (lst1[i] == lst2[j])
+            {
+                if (block == 0)
+                {
+                    L.push_back(lst1[i]);
+                    block = 1;
+                }
+                lst2[j] = NULL;
+            }
+        }
+        block = 0;
     }
 
+    L.print();
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"

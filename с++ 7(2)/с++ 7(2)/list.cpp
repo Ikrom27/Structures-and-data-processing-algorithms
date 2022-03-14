@@ -1,108 +1,131 @@
 #include "list.h"
 #include <iostream>
+#include <stdlib.h>
 
-Phonelist::Phonelist(){
-	Head = Tail = nullptr;
+Phonelist::Phonelist()
+{
+	Head = Tail = NULL;
 	Count = 0;
 }
+
 Phonelist::~Phonelist()
 {
 }
 
-int Phonelist::GetCount()
-{
-    return Count;
-}
-
-Elem* Phonelist::GetElem(int pos)
-{
-    Elem* temp = Head;
-
-    // Проверяем ввод
-    if (pos < 1 and pos > Count)
-    {
-        std::cout << "Incorrect position !\n";
-        return 0;
-    }
-
-
-    // Ищем нужный нам элемент
-    int i = 1;
-    while (i < pos && temp != 0)
-    {
-        temp = temp->next;
-        i++;
-    }
-
-    if (temp == 0)
-        return 0;
-    else
-        return temp;
-}
-
-void Phonelist::Print()
+void Phonelist::show()
 {
     // Если в списке присутствуют элементы, то пробегаем по нему
-   // и печатаем элементы, начиная с головного
+    // и печатаем элементы, начиная с головного
     if (Count != 0)
     {
         Elem* temp = Head;
         while (temp->next != 0)
         {
-            cout << "Номер абонента: ";
-            cout << temp->client_number << "  время разговора: ";
-            cout << temp->speak_time << " мин.  номер звонящего: ";
-            cout << temp->user_number << "\n";
-
+            cout << "ID-";
+            cout << temp->ab_index << " книга: ";
+            cout << "<<" << temp->book_name << ">>" << " дата выдачи: ";
+            cout << temp->date_issue << " дата возврата: ";
+            cout << temp->date_return << " дата фактического возврата: ";
+            cout << temp->date_fact << "\n";
             temp = temp->next;
         }
-    }
-    else {
-        cout << "No elements";
+        cout << "ID-";
+        cout << temp->ab_index << " книга: ";
+        cout << "<<" << temp->book_name << ">>" << " дата выдачи: ";
+        cout << temp->date_issue << " дата возврата: ";
+        cout << temp->date_return << " дата фактического возврата: ";
+        cout << temp->date_fact << "\n";
     }
 }
 
-void Phonelist::AddHead(string _client_number, int _speak_time, string _user_number)
+void Phonelist::change(int index, string _date_fact)
 {
-    // новый элемент
-    Elem* temp = new Elem;
-
-    // Предыдущего нет
-    temp->prev = 0;
-
-    // Заполняем данные
-    temp->client_number = _client_number;
-    temp->speak_time = _speak_time;
-    temp->user_number = _user_number;
-    
-    // Следующий - бывшая голова
-    temp->next = Head;
-
-    // Если элементы есть?
-    if (Head != 0)
-        Head->prev = temp;
-
-    // Если элемент первый, то он одновременно и голова и хвост
-    if (Count == 0)
-        Head = Tail = temp;
+    if (0 < index and index <= Count) {
+        if ((Count / 2) > index)
+        {
+            Elem* temp = Head;
+            while (temp->ab_index != index)
+            {
+                temp = temp->next;
+            }
+            temp->date_fact = _date_fact;
+            cout << "start from head\n";
+        }
+        else
+        {
+            Elem* temp = Tail;
+            while (temp->ab_index != index)
+            {
+                temp = temp->prev;
+            }
+            temp->date_fact = _date_fact;
+            cout << "start from tail\n";
+        }
+    }
     else
-        // иначе новый элемент - головной
-        Head = temp;
-
-    Count++;
+    {
+        cout << "incorrect index!\n";
+    }
 }
 
-void Phonelist::AddTail(string _client_number, int _speak_time, string _user_number)
+void Phonelist::remove_same()
+{
+    int pos = 1;
+    int i = 1;
+    Elem* Del = Head;
+
+    while (pos <= Count) {
+        if (Del->ab_index != pos) {
+            Del->ab_index = pos;
+        }
+        if (Del->date_fact == Del->date_return) {
+            cout << Del->book_name << " " << Del->ab_index << " " << Count << " " << Del->date_fact << " "<< Del->date_return << " DEELL\n";
+            //находим предыдущий и следующий элемент
+            Elem* PrevDel = Del->prev;
+            Elem* AfterDel = Del->next;
+
+            // Если удаляем не голову
+            if (PrevDel != 0 && Count != 1)
+                PrevDel->next = AfterDel;
+            // Если удаляем не хвост
+            if (AfterDel != 0 && Count != 1)
+                AfterDel->prev = PrevDel;
+
+            // Удаляются крайние?
+            if (pos == 1)
+                Head = AfterDel;
+            if (pos == Count)
+                Tail = PrevDel;
+
+            // Удаление элемента
+            delete Del;
+            Count--;
+            if (AfterDel != 0) {
+                Del = AfterDel;
+            }
+        }
+        else
+        {
+            cout << Del->book_name << " " << Del->ab_index << " " << Count << " " << Del->date_fact << " " << Del->date_return << "\n";
+            Del = Del->next;
+            pos ++;
+        }
+    }
+    //Count = pos;
+}
+
+void Phonelist::AddTail(string _book_name, string _date_issue, string _date_return, string _date_fact)
 {
     // Создаем новый элемент
     Elem* temp = new Elem;
     // Следующего нет
     temp->next = 0;
-
+    
     // Заполняем данные
-    temp->client_number = _client_number;
-    temp->speak_time = _speak_time;
-    temp->user_number = _user_number;
+    temp->book_name = _book_name;
+    temp->date_issue = _date_issue;
+    temp->date_return = _date_return;
+    temp->date_fact = _date_fact;
 
     // Предыдущий - бывший хвост
     temp->prev = Tail;
@@ -119,4 +142,7 @@ void Phonelist::AddTail(string _client_number, int _speak_time, string _user_num
         Tail = temp;
 
     Count++;
+    temp->ab_index = Count;
 }
+
+

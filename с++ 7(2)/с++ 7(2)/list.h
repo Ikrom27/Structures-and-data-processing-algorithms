@@ -6,32 +6,34 @@ using namespace std;
 
 struct Elem
 {
-	// данные
-	string client_number;
-	int speak_time;
-	string user_number;
+	int ab_index;
+	string book_name;
+	string date_issue;
+	string date_return;
+	string date_fact;
 
-	Elem* next, * prev;	// ссылки на след и предыдущий элемент
+	Elem* next, * prev;	
 };
 
 class Phonelist
 {
 private:
 
-	Elem* Head, * Tail;		// Голова, хвост
-	int Count;				// Количество элементов
+	Elem* Head, * Tail;		
+	int Count;			
 
 public:
 
-	Phonelist();		// Конструктор
-	~Phonelist();		// Деструктор
+	Phonelist();		
+	~Phonelist();		
 
-	int GetCount();		// Получить количество
-	Elem* GetElem(int);	// Получить элемент списка
-	void Print();		// Печать списка
+	int GetCount() { return Count; };
 
-	void AddTail(string _client_number, int _speak_time, string _user_number);	// Добавление в конец списка
-	void AddHead(string _client_number, int _speak_time, string _user_number);	// Добавление в начало списка
+	void show();		
+	void change(int index, string _date_fact);
+	void remove_same();
+	void AddTail(string _book_name, string _date_issue, string _date_return, string _date_fact);
+	//void AddHead(int _ab_index, string _book_name, string _date_issue, string _date_return, string _date_fact);
 };
 
 
